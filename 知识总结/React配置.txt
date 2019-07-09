@@ -1,0 +1,21 @@
+React环境搭建
+1>script标签引入文件的方式（下载到本地或CDN方式）
+优点：可以简洁、快速，测试某个知识点方便
+缺点：不是HTTP服务环境，不能模块化组织代码
+2>使用create-react-app脚手架搭建（推荐）
+a.从命令行中进入到本地项目
+b.运行npm install(i) -g create-react-app(全局安装)
+c.create-react-app 文件名   =>  创建react文件夹
+d.可删除node_modules，原因：东西太多，没必要都要
+e.运行npm i ,安装项目依赖（安装需要的配置）
+f.运行npm start ,开启项目
+g.在src下的index.js和index.html写代码即可
+h.注：可直接使用npx create-react-app 文件名代替b. c.步骤
+
+React打包环境配置：
+1>npm run build:项目进行打包，会出现build的文件夹，只要运行里面的static下的index.html（但无法正常打开）
+2>npm i (-g) serve:安装库
+3>没有安装全局的时候：npx server -s build
+   安装全局的时候：server -s build
+4>会出现地址，复制打开即可
+

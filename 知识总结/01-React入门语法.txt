@@ -1,0 +1,31 @@
+VsCode 快捷键使用：
+插件：
+1>ES7 React/Redux/GraphQL/React-Native snippetss
+ 	rcc：快速构建类组件模板
+  rfc：快速构建函数组件模板
+
+ React目录：
+    1>index.js入口文件
+    2>app.js根组件
+    3>serviceWorker.js：
+    4>package.json(配置文件)：
+  	"scripts"下的命令：
+      a.start:启动
+      b.build:打包
+      c.test:测试
+      d.eject:打碎，执行后会得到封装前的React文件
+
+
+组件的表现形式：
+1>函数组件：
+function People { } => 使用 <People></People>或<People/>
+2>类组件
+class Man extends React.Component { }
+注：a.添加 import React,{Component} from 'React';
+ b.必须使用render (){ }
+
+使用组件：
+1>使用时必须将标签名大写，如<Man/>
+2>变量在作用域内
+3>有一个return返回且必须为JSX
+4>组件内可以相互嵌套组件

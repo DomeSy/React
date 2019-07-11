@@ -1,0 +1,52 @@
+setState:用来修改组件状态的方法
+1.使用setState的方式：
+1>对象：setState( { } )
+2>回调函数：setState(cb)
+ 2.setState的特性
+1>状态是封闭的，只有组件自己能够访问和修改
+2>批量执行：
+a.对于同一个key多次操作并合并，也就是只执行最后一次
+b.多个key会一次执行
+3>异步（大多数情况下),也有可能同步，即获取到最新状态的值，有以下方法：
+a.传递参数给setState
+b.在setState中的第二个参数的回调函数也可以获取到
+c.定时器：将延迟时间设置为0秒（原因：事件循环）
+d.原生事件中（原因跳过了React的事件机制）
+例：在custructor中定义counter：1
+componentDidMount(){
+const { counter } = this.state;
+
+/*批量操作*/
+this.setState({ counter: counter + 1 });
+this.setState({ counter: counter + 1 });
+this.setState({ counter: counter + 1 });
+
+/*异步*/
+console.log( counter );      => 1
+
+/*同步获取最新值*/
+/*传递参数给setState*/
+/* 第一个参数prevState:相当于this.state 第二个为props */
+this.setState((prevState, props)=>{
+console.log( prevState.counter );      => 2
+return prev.counter;
+});
+
+/*在setState中的第二个参数的回调函数*/
+this.setState({ counter:counter +1 },()=>{
+console.log( counter );      => 2
+})
+
+/*定时器*/
+setTimeout(()=>{
+console.log( counter );      => 2
+},0)
+
+/*原生事件*/
+document.body.addEventListener('click',this.changeCounter);
+}
+changeCounter = () => {
+const { counter } = this.state;
+this.setState({ counter: counter + 1 });
+console.log( counter );      => 3
+}

@@ -49,23 +49,6 @@ function WelcomeDialog() {
 }
 
 
-function RadioGroup(props){
-  // 将RadionGroup的name属性赋值给所有的Radio
-  return (
-    <div>
-      {
-        React.Children.map(props.children, child => 
-          // 第一种：将属性名直接赋值给，但React不允许添加属性，因为对象不能扩展
-          // child.props.name = props.name;
-
-          // 第二种：React.cloneElement：可以克隆一个虚拟dome
-          React.cloneElement(child, { name: props.name })
-        )
-      }
-    </div>
-  )
-}
-
 // 过滤器，消除除p标签以外的标签
 function FilterP(props) {
   return (
@@ -84,6 +67,23 @@ function FilterP(props) {
   )
 }
 
+function RadioGroup(props){
+  // 将RadionGroup的name属性赋值给所有的Radio
+  return (
+    <div>
+      {
+        React.Children.map(props.children, child => 
+          // 第一种：将属性名直接赋值给，但React不允许添加属性，因为对象不能扩展
+          // child.props.name = props.name;
+
+          // 第二种：React.cloneElement：可以克隆一个虚拟dome
+          React.cloneElement(child, { name: props.name })
+        )
+      }
+    </div>
+  )
+}
+
 function Radio(props) {
   return (
     <label>
@@ -97,6 +97,7 @@ export default function Composition() {
   return (
     <div>
       <WelcomeDialog />
+      
       <FilterP>
         <h1>foo</h1>
         <p>bar</p>

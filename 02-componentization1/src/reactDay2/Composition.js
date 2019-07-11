@@ -48,23 +48,6 @@ function WelcomeDialog() {
   )
 }
 
-// 过滤器，消除除p标签以外的标签
-function FilterP(props) {
-  return (
-    <div>
-      {
-        React.Children.map(props.children,child => {
-          // child实际上是虚拟DOM
-          console.log(child);
-          if(child.type !== 'p'){
-            return;
-          }
-          return child;
-        })
-      }
-    </div>
-  )
-}
 
 function RadioGroup(props){
   // 将RadionGroup的name属性赋值给所有的Radio
@@ -83,6 +66,23 @@ function RadioGroup(props){
   )
 }
 
+// 过滤器，消除除p标签以外的标签
+function FilterP(props) {
+  return (
+    <div>
+      {
+        React.Children.map(props.children,child => {
+          // child实际上是虚拟DOM
+          console.log(child);
+          if(child.type !== 'p'){
+            return;
+          }
+          return child;
+        })
+      }
+    </div>
+  )
+}
 
 function Radio(props) {
   return (

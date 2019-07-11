@@ -104,6 +104,7 @@ export default function Composition() {
         <p>Jerry</p>
       </FilterP>
 
+      {/* 单选 */}
       <RadioGroup name="mvvm">
         <Radio value="vue">vue</Radio>
         <Radio value="react">react</Radio>

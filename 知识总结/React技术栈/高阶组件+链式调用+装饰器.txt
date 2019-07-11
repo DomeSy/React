@@ -1,0 +1,101 @@
+高阶组件HOC（Higher-Order Components）
+1>React中重用组件逻辑的高级技术，它不是react的api，而是一种 组件增强模式。  高阶组件是一个函数，它返回另外一个组件，产生新的组件可以对被包装组件属性进行包装，也可 以重写部分生命周期
+2>使用：当对一个组件进行扩充的时候，应当首先考虑高阶组件
+3>作用：提高组件复用率
+如：
+import React,{ Component } from 'react';
+
+function Domesy(props) {
+  return (
+    <div>
+      {props.stage} - {props.name}
+    </div>
+  )
+}
+
+
+// 下面两种形式都是高阶组件
+// const withDomesy = (Component) => {
+//   // props:传过来的参数
+//   const NewComponent = (props) => {
+//     return <Component {...props} stage="react" /> 
+//   };
+//   return NewComponent;
+// }
+
+// 创建一个函数接收一个组件返回一个强化后的组件
+function withDomesy(Component) {
+  const NewComponent = (props) => {
+    return <Component {...props} stage="react"/> 
+  };
+  return NewComponent;
+}
+
+export default withDomesy(Domesy);
+
+链式调用： 从里向外，依次调用
+ // 功能：日志记录
+function withLog(Component){
+  console.log(Component.name + "加强了");
+
+  return props => {
+    return <Component {...props} />
+  }
+}
+// 链式调用：从里向外
+export default withLog(withDomesy(withLog(Domesy))) ;
+
+ 装饰器写法：	
+1>链式写法比较蛋疼，逻辑比较绕，所以在ES7中有个优秀的写法：装饰器，专门处理这种弱智问题。
+2>安装：npm i -D @babel/plugin-proposal-decorators
+3>配置：在config-overrides
+const { addDecoratorsLegacy } = require("customize-cra"); 
+module.exports = override( 
+ ...,  
+addDecoratorsLegacy() 
+);
+4>使用：@符号
+5>注：a.使用装饰器的时候，在导出组件必须是类组件
+     b.调用的装饰器组件应当在最终导出的组件上面
+6>例如：
+// 装饰器写法
+import React,{ Component } from 'react';
+
+function withDomesy(Component) {
+  const NewComponent = (props) => {
+    return <Component {...props} stage="react"/> 
+  };
+  return NewComponent;
+}
+
+// 功能：日志记录
+function withLog(Component){
+  console.log(Component.name + "加强了");
+
+  return props => {
+    return <Component {...props} />
+  }
+}
+
+// 在装饰器的写法中不能用函数式组件只能用类组件，并且是从上调用，应写在Domesy组件的上面
+@withLog
+@withDomesy
+@withLog
+class Domesy extends Component {
+  reder() {
+    return(
+      <div>
+        {this.props.stage} - {this.props.names}
+      </div>
+    )
+  }
+}
+
+export default Domesy;
+
+ 
+
+ 
+
+
+ 

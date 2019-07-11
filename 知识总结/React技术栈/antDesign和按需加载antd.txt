@@ -1,0 +1,44 @@
+安装antd(UI库)
+  npm i antd -S
+范例：
+import React,{ Component } from 'react';
+import Button from 'antd/lib/button';
+import "antd/dist/antd.css";
+class App extends Component {
+render() {
+return (
+<div>
+<Button type="primary">Button</Button>
+</div>
+)
+}
+}
+
+问题：
+1>直接引用比较繁琐
+2>加载的css文件是整个antd的文件，多余
+解决：按需加载
+
+按需加载antd
+1>安装react-app-rewired （取代react-script） 
+    目的：希望不把当前的库打散，就可以扩展webpack进行配置
+ 2>依赖：npm install react-app-rewired customize-cra babel-plugin-import -D
+     注：a.react-app-rewired是react社区开源的一个修改CRA配置的工具
+      b.customize-cra：提供了一组用于自定义利用react-app-rewired核心功能的Create React App v2配置, 可以通过config-overrides.js文件来对webpack配置进行扩展，cra是create-react-app的缩写
+c.babel-plugin-import：在编译过程中将 import 的写法自动转换为按需引入的方式
+ 3>在根目录下创建 config-overrides.js文件
+const { override, fixBabelImports } = require("customize-cra");
+module.exports = override(
+fixBabelImports("import",{
+libraryName: "antd",
+libraryDirectory: "es",
+style:"css"
+}) 
+);
+  4>修改package.json
+"scripts": {
+"start": "react-app-rewired start",
+"build": "react-app-rewired build",
+"test": "react-app-rewired test",
+"eject": "react-app-rewired eject"
+}

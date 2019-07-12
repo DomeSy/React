@@ -1,0 +1,129 @@
+生命周期：
+1>React生命周期两个版本，一个是React v16.0以前的 和 React v16.4两个版本
+2>变更理由：React v16.0前的生命周期在React v16推出的Fiber之后就不合适了，因为如果要开启async rendering，在render函数之前的所有函数，都有可能被执行多次。
+3>React v16.0的生命周期有哪些是在render前执行的呢？
+componentWillMount
+componentWillReceiveProps
+shouldComponentUpdate
+componentWillUpdate
+4>如果开发者开了async rendering，而且又在以上这些render前执行的生命周期方法做AJAX请求的话，那AJAX将被无谓地多次调用。
+明显不是我们期望的结果。而且在componentWillMount里发起AJAX，不管多快得到结果也赶不上首次render，而且componentWillMount在服务器端渲染也会被调用到（当然，也许这是预期的结果），这样的IO操作放在componentDidMount里更合适。
+禁止不能用比劝导开发者不要这样用的效果更好，所以除了shouldComponentUpdate，其他在render函数之前的所有函数（componentWillMount，componentWillReceiveProps，componentWillUpdate）都被getDerivedStateFromProps替代。
+也就是用一个静态函数getDerivedStateFromProps来取代被deprecate的几个生命周期函数，就是强制开发者在render之前只做无副作用的操作，而且能做的操作局限在根据props和state决定新的state.
+React v16.0刚推出的时候，是增加了一个componentDidCatch生命周期函数，这只是一个增量式修改，完全不影响原有生命周期函数；但是，到了React v16.3，大改动来了，引入了两个新的生命周期函数。
+
+React  v16.0
+
+四大阶段：Intialization(初始化)、Mounting(挂载)、Update(更新)、Unmounting(卸载)
+1.Intialization:
+constructor():构造函数
+class Test extends Component {
+  constructor(props) {
+    super(props);
+  }
+}
+注：a.super(props)：用来调用基类的构造方法( constructor() ), 也将父组件的props注入给子组件，功子组件读取(组件中props只读不可变，state可变)
+ b.初始化操作，定义this.state的初始内容
+ c.只会执行一次
+2.Mounting:组件挂载阶段
+1>componentWillMount：在组件挂载到DOM前调用
+    	注：a.这里面的调用的this.setState不会引起组件的重新渲染，也可以把写在这边的内容提到constructor()，所以在项目中很少。
+         b.只会调用一次
+2>render:渲染
+  注：a.只要props和state发生改变（无两者的重传递和重赋值，论值是否有变化，都可以引起组件重新render），都会重新渲染render。
+     	 b.return：是必须的，是一个React元素（UI，描述组件），不负责组件实际渲染工作，由React自身根据此元素去渲染出DOM。
+         c.render是纯函数（Pure function：返回的结果只依赖与参数，执行过程中没有副作用），不能执行this.setState。
+ 3>componentDidMount：组件挂载到DOM后调用
+   注：调用一次
+3.Update:组件更新状态
+1>componentWillReceiveProps(nextProps):调用于props引起的组件更新过程中
+注：a.nextProps：父组件传给当前组件新的props
+ b.可以用nextProps和this.props来查明重传props是否发生改变（原因：不能保证父组件重传的props有变化）
+ c.只要props发生变化就会，引起调用 
+2>shouldComponentUpdate(nextProps, nextState)：性能优化组件
+注：a.nextProps：当前组件的this.props
+       b.nextState：当前组件的this.state
+ c.通过比较nextProps和nextState,来判断当前组件是否有必要继续执行更新过程。
+ d.返回false：表示停止更新，用于减少组件的不必要渲染，优化性能
+ e.返回true：继续执行更新
+ f.像componentWillReceiveProps（）中执行了this.setState，更新了state，但在render前(如shouldComponentUpdate，componentWillUpdate)，this.state依然指向更新前的state，不然nextState及当前组件的this.state的对比就一直是true了
+3>componentWillUpdate(nextProps, nextState)：组件更新前调用
+注：a.在render方法前执行
+ b.由于组件更新就会调用，所以一般很少使用
+4>render：重新渲染
+5>componentDidUpdate(prevProps, prevState)：组件更新后被调用
+注：a.prevProps：组件更新前的props
+ b.prevState：组件更新前的state
+ c.可以操作组件更新的DOM
+4.Unmounting：
+componentWillUnmount：组件被卸载前调用
+注：可以在这里执行一些清理工作，比如清楚组件中使用的定时器，清楚componentDidMount中手动创建的DOM元素等，以避免引起内存泄漏
+
+React v16.4 
+
+与旧的生命周期相比，
+1>新增了getDerivedStateFromProps和getSnapshotBeforeUpdate
+2>取消了componentWillMount、componentWillReceiveProps、componentWillUpdate，即取消了除卸载阶段的compentWillUnmount所有带Will的钩子函数
+3>getDerivedStateFromProps(prevProps, prevState)：组件创建和更新时调用的方法。
+注：a.prevProps：组件更新前的props
+ b.prevState：组件更新前的state
+ c.在React v16.3中，在创建和更新时，只能是由父组件引发才会调用这个函数，在React v16.4改为无论是Mounting还是Updating，也无论是什么引起的Updating，全部都会调用。
+ 	    d.类似于componentWillReceiveProps，不同的是getDerivedStateFromProps是一个静态函数，也就是这个函数不能通过this访问到class的属性，当然也不推荐使用
+e.如果props传入的内容不需要影响到你的state，那么就需要返回一个null，这个返回值是必须的，所以尽量将其写到函数的末尾。
+f.在组件创建时和更新时的render方法之前调用，它应该返回一个对象来更新状态，或者返回null来不更新任何内容。
+如：
+static getDerivedStateFromProps(nextProps, prevState) {
+    const {type} = nextProps;
+    // 当传入的type发生变化的时候，更新state
+    if (type !== prevState.type) {
+        return {
+            type,
+        };
+    }
+    // 否则，对于state不进行任何操作
+    return null;
+}
+
+4>getSnapshotBeforeUpdate(prevProps,prevState):Updating时的函数，在render之后调用。
+注：a.prevProps：组件更新前的props
+ b.prevState：组件更新前的state
+ c.可以读取，但无法使用DOM的时候，在组件可以在可能更改之前从DOM捕获一些信息（例如滚动位置）
+d.返回的任何指都将作为参数传递给componentDidUpdate（)
+
+如：
+class ScrollingList extends React.Component {
+  constructor(props) {
+    super(props);
+    this.listRef = React.createRef();
+  }
+
+  getSnapshotBeforeUpdate(prevProps, prevState) {
+    //我们是否要添加新的 items 到列表?
+    // 捕捉滚动位置，以便我们可以稍后调整滚动.
+    if (prevProps.list.length < this.props.list.length) {
+      const list = this.listRef.current;
+      return list.scrollHeight - list.scrollTop;
+    }
+    return null;
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    //如果我们有snapshot值, 我们已经添加了 新的items.
+    // 调整滚动以至于这些新的items 不会将旧items推出视图。
+    // (这边的snapshot是 getSnapshotBeforeUpdate方法的返回值)
+    if (snapshot !== null) {
+      const list = this.listRef.current;
+      list.scrollTop = list.scrollHeight - snapshot;
+    }
+  }
+
+  render() {
+    return (
+      <div ref={this.listRef}>{/* ...contents... */}</div>
+    );
+  }
+}
+
+ 
+
+

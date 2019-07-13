@@ -1,0 +1,103 @@
+Hook:
+1>React16.8一个新增项，它可以让你在不编写class的情况下使用state以及其他的React特性
+2>Hook的特点：
+a.使你在无需修改组件结构的情况下复用状态逻辑
+b.可将组件中相互关联的部分拆分成更小的函数，复杂组件将变得更容易理解
+c.更简洁、更理解的代码
+
+Hook的钩子：
+1.React.useState:
+a.用法：const [state, setState] = useState(initialState);
+b.state：状态的变量
+c.setState：状态变更的函数
+d. initialState是state的初始值
+
+    import React, { useState } from "react";
+    export default function HooksTest() {  
+const [fruit, setFruit] = useState("");  
+return (   
+ <div>
+<p>{fruit === "" ? "请选择喜爱的水果：" : `您的选择是：${fruit}`}</p>    							                  
+ </div>  
+); }
+
+
+2.副作用钩子 React.useEffect 
+1>副作用是指function做了和本身运算返回值无关的事，如请求数据、修改全局变量，打印、数据获取、设置订阅以及手动更改React组件中的DOM都属于副作用操作都算是副作用
+2>useEffect 给函数组件增加了执行副作用的能力。
+3>使用：
+useEffect( ()=>{...}, [ ]);
+注：a.第一个是回调函数，第二个是依赖（数组）
+ b.第二个依赖必须要写，如果没有则写空数组，原因：useEffect只要发生改变就会循环，无论值是否改变，都会一直循环导致一直执行。
+ c.useEffect：可以重复执行，但每一次只能执行一次
+如：
+ useEffect(() => {
+    // 会循环调用
+    console.log('get fruits');
+    setTimeout(()=>{
+      setFruits(['草莓',"香蕉"])
+    },1000)
+  },[])
+   4>清除工作：有一些副作用是需要清除的，防止内存泄露（如：定时器）
+有清除工作时直接反会一个函数
+useEffect(() => {    
+   const timer = setInterval(() => {        
+console.log('msg');            
+   }, 1000);
+   return function(){        	
+clearInterval(timer);    
+   } }, []);
+
+3.React.useReducer：
+1>useState的另一个可选项，useReducer常用于组件有复杂状态逻辑时，类似于redux中的reducer概念
+2>使用：const [fruits, dispatch] = useReducer(fruitReducer,[]);
+注：a.第一个参数fruitReducer是相关reducer的函数，第二个是fruits的初始值
+ b.dispatch：派发事件
+如：dispatch({ type:"add", playold: ["香蕉", "草莓"] })
+然后到fruitReducer	函数内
+// 将状态移至全局
+function fruitReducer(state,action) {
+  switch (action.type) {
+    case 'init':
+      return action.payload;
+    case 'add':
+      return [...state,action.payload] //等同于[...fruits,pname]
+    default:
+      return state;
+  }
+}
+这里的state相当于是fruits，action相当于dispatch
+
+4.React.useContext：用于快速在函数式组件中导入上下文
+1>创建上下文  const Context = React.createContext();
+2>在导出的函数内提供上下文的值
+如：
+export default function HooksTest() { 
+   // ...  
+  return (
+    {/* 提供上下文的值 */}    
+    <Context.Provider value={{fruits,dispatch}}>      
+      <div>        
+        {/* 这里不再需要给FruitAdd传递变更函数，实现了解耦 */}        
+        <FruitAdd />      
+      </div>    
+    </Context.Provider>  
+  ); 
+}
+ 	3>在FruitAdd函数中通过useContext来获取上下文的值
+如：
+function FruitAdd(props) {  
+  // 获取上下文  
+  const {dispatch} = useContext(Context);  
+  const onAddFruit = e => {    
+    if (e.key === "Enter") {      
+      // 直接派发动作修改状态      
+      dispatch({ type: "add", payload: pname })      
+      // 清除为空状态
+      setPname("");    
+    }  
+  };  
+  // ... 
+}
+注：a.Context创建完成后，应当由Context.Provider提供value，此时不需要传输fruits和dispatch
+b.在使用时用useContext(Context)来获取到value的fruits和dispatch然后正常使用即可

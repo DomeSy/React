@@ -1,0 +1,93 @@
+类组件和函数式组件
+1>接受的props不同：
+类组件：直接调用this.props.name,可以用解构赋值的方式
+  如 let {name} = this.props
+函数式组件：第一个参数的值，直接使用即可（如：props.name），注：props是形参
+2>类组件有实例
+    函数组件无实例（实例：是指能是否使用this）
+3>类组件有状态
+    函数式组件无状态（当然现在的函数式组件也可以有状态）
+4>基本原则：容器组件负责数据获取，展示组件负责根据props显示信息
+    优势：a.如何工作和如何展示分离
+  b.重用性高
+  c.更高的性能
+  d.更易于测试
+
+React组件：尽量写为纯组件
+
+例子：
+// 容器组件
+export default class CommentList extends Component {
+  constructor(props){
+    super(props);
+    this.state={
+      comments:[]
+    };
+  }
+
+  componentDidMount() {
+    setInterval(()=>{
+      this.setState({
+        comments:[
+          {body:"react is very good", author: "facebook" },
+          {body:"vue is very good", author: "youyuxi" },
+        ]
+      });
+    },1000);
+  }
+  
+  render() {
+    return (
+      <div>
+        {this.state.comments.map((c,i) => (
+           <Comment key={i} data={c} />
+        ))}
+      </div>
+    );
+  }
+}
+
+// 展示组件
+function Comment({ data }){
+
+ //问题：此处会一直渲染 render commpent
+  console.log("render commpent");  
+  return (
+    <div>
+      <p>{data.body}</p>
+      <p> --- {data.author}</p>
+    </div>
+  )
+}
+
+分析：
+1>由于定时器一直在跑，但是数据并没有发生，导致会一直渲染，
+      	   当然react有diff算法，如果值没有发生变化，也不会去做真正的更新操作，
+           但本省diff算法也会消耗资源，所以尽可能的减少diff算法，从而优化性能。
+2>本案例是通过data.body和data.author的改变导致
+
+解决：
+1> shouldComponentUpdate优化：
+直接比较props.data.body和this.props.data.body(所有的属性值)的值是否相等，如果相等则直接false，否则为true
+2>React.PureComponent:
+    注：a.使用PureComponent不能在用shouldComponentUpdate（接下来的组件都一样）
+     	   b.PureComponent是浅比较，也就是说，如果是引用类型的数据，只会比较是不是同一个地址，而不会比较具体这个地址存的数据是否完全一致。
+问题：上述的例子中（对象），是使用定时器，所以会造成不是同一个地址。导致还是会一直渲染，并不会起到作用。
+解决：1.将传过来的对象变为单个值，在进行渲染即可
+如：将<Comment key={i} data={c} /> 变为<Comment key={i} {...c} />即可
+2.immutable.js：也可以
+     c.版本在15.3之后出现
+3>React.memo:高阶组件
+注: a.让函数式的组件也有PureComponent的功能（与PureComponent注意点相同）
+      b.版本在16.6.0
+c.使用
+const Comment = React.memo(function({ body,author }){
+  // 也只会渲染一次
+  console.log("render commpent");  
+  return (
+    <div>
+      <p>{body}</p>
+      <p> --- {author}</p>
+    </div>
+  )
+});

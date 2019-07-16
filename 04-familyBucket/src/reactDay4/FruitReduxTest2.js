@@ -67,8 +67,8 @@ function HookReduxTest({fruits, loading, loadingStart, loadingEnd, init}) {
 
 // mapStateToProps:
 const mapStateToProps = state => ({
-  fruits: state.list,
-  loading: state.loading
+  fruits: state.fruit.list,
+  loading: state.fruit.loading
 });
 
 // mapDispatchToProps:

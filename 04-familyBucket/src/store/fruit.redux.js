@@ -29,7 +29,8 @@ export default function fruitReducer(state = {list:[],loading:false}, action) {
     case "init":
       return { ...state, list: action.payload };
     case "add":
-      return { ...state, list: [...state.list, action.payload] };
+      // return { ...state, list: [...state.list, action.payload] };
+      return Object.assign({}, state, {list:[...state.list, action.payload]});
     case "loading_start":
       return { ...state, loading: true };
     case "loading_end":

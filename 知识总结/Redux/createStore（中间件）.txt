@@ -1,0 +1,59 @@
+createStore(Reducer, [deaultState]，applyMiddleware(thunk))：
+1.创建一个 Redux store 来以存放应用中所有的 state
+2.引入 import { createStore } from "redux";
+3.Reducer(state,action): 纯函数(如果函数的调用参数相同，则永远返回相同的结果。它不依赖于程序执行期间函数外部任何状态或数据的变化，必须只依赖于其输入参数。)
+1>.state：当前的state树
+2>.action：处理的action（必须有action.type这个属性）
+如：
+function fruitReducer(state = {list:[],loading:false}, action) {
+  switch (action.type) {
+    case "init":
+      return { ...state, list: action.payload };
+    case "add":
+      return { ...state, list: [...state.list, action.payload] };
+//等价于
+return  Object.assign({}, state, {list:[...state.list, action.payload]});
+    case "loading_start":
+      return { ...state, loading: true };
+    case "loading_end":
+      return { ...state, loading: false };
+    default:
+      return state;
+  }
+}
+注：a.state = {list:[],loading:false}：设置初始值
+ b.return返回的数必须要将之前的state展开，然后再添加上要添加的属性(注：这里相当于替换state里的属性)
+有两种方法：扩展运算符...  如 { ...state, list: [...state.list, action.payload] };
+                      Object.assign  
+如:    Object.assign({}, state, {list:[...state.list, action.payload]});
+3>deaultState:上述中的state的初始值，不介意这么写。
+4>applyMiddleware(thunk):高阶函数
+thunk：中间件(函数，对store.dispath方法进行了改造，在发出Action和执行Reducer这两步之间，添加了其他功能)
+        5>使用：
+如：const store = createStore(
+  combineReducers({fruit: fruitReducer,user}),
+  applyMiddleware(logger, thunk)
+);
+
+combineReducer(object):
+1>链接多个reducer
+2>参数是一个对象
+3>引入 import { combineReducer} feom 'redux';
+4>如：combineReducers({fruit: fruitReducer,user})
+
+applyMiddleware(thunk):
+1>用来引用多个中间件的方法
+2>引入 import { applyMiddleware } feom 'redux';
+3>如：applyMiddleware(logger, thunk)
+
+常用的中间件(thunk): 中间件声明时，必须按照引用的顺序来写
+1>redux-logger：
+a.可以生成日志的中间件
+b.配置：npmi i -S react-logger
+c.引入  import logger from 'redux-logger';
+2>redux-thunk:
+a.改造store.dispatch，使得后者可以接受函数作为参数
+b.配置：npmi i -S react-thunk
+c.引入 import thunk from 'redux-thunk';
+
+

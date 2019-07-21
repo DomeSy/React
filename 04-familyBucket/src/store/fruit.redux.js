@@ -15,6 +15,7 @@ export const loadingEnd = () => ({
 
 // 异步
 export const asyncFetch = payload => {
+  console.error('-----a----',payload);
   return dispatch => {
     dispatch({ type: "loading_start" });
     setTimeout(()=>{

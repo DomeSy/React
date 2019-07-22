@@ -48,6 +48,7 @@ const PrivateRoute = connect(state => ({
     // component需要重新命名为Component,原因是JSX需要大写  
     // 结构props为component和rest
     // rest为传递给Route的属性
+    console.log( rest );
     return (
       <Route
         {...rest}

@@ -11,15 +11,21 @@ export default (state = initialState, action) => {
       return state;
   }
 };
-export function login() {
-  return (dispatch, getState) => {
-    dispatch({ type: "requestLogin" });
-    setTimeout(() => {
-      if (Date.now() % 2 === 0) {
-        dispatch({ type: "loginSuccess" });
-      } else {
-        dispatch({ type: "loginFailure" });
-      }
-    }, 1000);
-  };
+
+// export function login() {
+    // return (dispatch, getState) => {
+  //   dispatch({ type: "requestLogin" });
+  //   setTimeout(() => {
+  //     if (Date.now() % 2 === 0) {
+  //       dispatch({ type: "loginSuccess" });
+  //     } else {
+  //       dispatch({ type: "loginFailure" });
+  //     }
+  //   }, 1000);
+  // };
+// }
+
+// redux-saga
+export function login(uname) {
+  return { type: "login", uname }
 }

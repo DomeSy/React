@@ -19,3 +19,14 @@ React打包环境配置：
    安装全局的时候：server -s build
 4>会出现地址，复制打开即可
 
+React加载的依赖：
+1>安装ant design：npm i antd -S 
+2>按需加载natd(需要配置)：
+npm install react-app-rewired customize-cra babel-plugin-import -D
+3>装饰器(需要配置)：npm i -D @babel/plugin-proposal-decorators
+4>使用Hook必须要在(react和react-dom)16.8以上:npm i react react-dom -S
+5>安装Redux：npm i -S redux react-redux
+6>安装Router：npm i -S react-router-dom
+7>安装redux-logger：npm i -S react-logger
+8>安装redux-thunk：npm i  -S react-thunk 
+9>安装redux-saga：npm install -save redux-saga

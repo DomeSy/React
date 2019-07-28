@@ -1,0 +1,15 @@
+umi：
+1>定义：umi是一个可插拔的企业级react应用框架。umi以路由为基础的，支持类next.js的约定式路由，以及各种进阶的路由功能，并以此进行功能扩展，比如支持路由级的按需加载。
+2>特性：
+a.开箱即用，内置react、react-router等
+b.类 next.js 且功能完备的路由约定，同时支持配置的路由方式
+c.完善的插件体系，覆盖从源码到构建产物的每个生命周期
+d.高性能，通过插件支持PWA、以路由为单元的 code splitting 等
+e.支持静态页面导出，适配各种环境、比如中台业务、无线业务、egg、支付宝钱包、云凤蝶等
+f.开发启动快，支持一键开启 dll 和 hard-source-webpack-plugin 等
+h.一键兼容到 IE9, 基于 umi-plugin-polyfills
+i.完善的 TypeScript 支持，包括 d.ts 定义和 umi test
+j,与 dva 数据流的深入融合，支持 duck directory、model的自动加载、code splitting 等等
+3>数据流向：
+数据的改变发生通常是通过用户交互行为或者浏览器行为（如路由跳转等）触发的，当此类行为会改变数据的时候可以通过 dispatch 发起一个 action，如果是同步行为会直接通过 Reducers 改变 State ，如果是异步行为（副作用）会先触发 Effects 然后流向 Reducers 最终改变 State，所以在 dva 中，数据流向非常清晰简明，并且思路基本跟开源社区保持一致（也是来自于开源社区）。
+

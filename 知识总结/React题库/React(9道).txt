@@ -1,0 +1,56 @@
+下列说法错误的是
+A.React 中某个元素的key可以确定其在同级元素中具有唯一性
+B.setState 用来修改组件的状态，此过程是异步的
+C.JSX是JavaScript的语法扩展，使用它可以高效构建
+D.React 中 refs 使我们可以访问 DOM 元素或组件实例
+
+下列关于组件错误的是？
+A.React中组件可以将UI划分为独立、可重用的区块
+B.组件常见的形式有函数和类两种形式
+C.组件通过props获取父组件传递的数据，props是只读的
+D.组件通过state维护组件状态，只有state变化会导致组件重新渲染
+
+下列关于组件使用说法错误的是？
+A.展示组件关心组件看起来是什么，容器组件则是更关心组件是如何运作的
+B.React中通常使用受控组件实现表单，即包含表单元素的组件在state中保存输入的值，且每次事件回调中更新state
+C.高阶组件以组件为参数并返回一个新组件，它主要用于组件扩展和逻辑复用
+D.通过prop.children可以获取外部传入内容，这里的children是一个JSX或者JSX数组
+
+下列关于React生命周期的说法错误的是？
+A.componentDidMount 在组件真正在被装载之后执行，它仅执行一次，可用于异步数据请求
+B.componentWilReceiveProps 在组件接收到组件的时候调用，可用于组件初始化时处理属性
+C.shouldComponentUpdate 在组件接收到属性的时候调用，可用于组件初始化时处理属性
+D.组件在 render 函数中生成虚拟 DOM，它会执行多次
+
+以下关于 Redux 说法哪项是错误的？
+A.Redux是JavaScript状态容器，提供可预测化的状态管理，主要是解决了组件间状态共享的问题
+B.Redux 工作流程是 view 调用 store 的 dispatch 派发 action， store 通过reducer 进行 state 操作，view 通过 store 的 subscribe 订阅 state 变更，通过 store 的 getState 获取最新state
+C.Redux是通过状态容器，可用于React之外的框架
+D.使用 react-redux 可以省掉状态变更订阅过程是因为使用了 React 的 Context 功能
+
+以下关于 react-router 说法哪项是错误的？
+A.在 react-router 中扔然遵循一切皆组件思想，包括路由的配置
+B.在 react-router 中可能同时匹配多个路由并同时显示这些内容
+C.Route组件三个属性 render/children/component 是互斥的，优先执行component
+D.react-router 没有提供路由权限控制功能，若要实现可以通过高阶组件扩展Route
+
+关于虚拟DOM，下列说法错误的是？
+A.虚拟 DOM 其实就是 JavaScript 对象，它能够描述 DOM 树的结构
+B.虚拟 DOM 不一定能够提高性能表现
+C.通过 diff 算法比较新旧虚拟 DOM 可以得到最少 DOM 操作
+D.不使用虚拟 DOM 方案无法有效减少 DOM 操作
+
+下列关系diff算法描述错误的是？
+A.把树形结构按照层级分解，只比较同级元素
+B.拥有不同类型的两个元素将导致新树结构创建和替换
+C.当比较同类型DOM元素时，仅需比较两者特性（attributes）差异并做更新即可
+D.当比较同类型组件元素时，React 更新属性后执行 render 并将新老 vdom 进行递归比对
+
+下列说法正确的是？
+A.react-redux 通过 Context 实现了 store 实例的传递
+B.react-redux 通过 Hoc 扩展了组件状态变更更检测及状态的获取能力
+C.redux 能够引入中间件使通过扩展 store 的 dispatch 实现的
+D.redux 中修改状态的 redux 必须是纯函数
+
+
+

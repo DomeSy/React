@@ -11,6 +11,6 @@
 - - -
 05-umiTest：umi和dva框架
 - - -
-06-E-commerceProjects：电商项目
+06-E-commerceProjects：电商项目(umi + dva + antd + antd-pro)
 - - -
 07-sourceCode：手写实现createElement(并返回vdom)、手写实现render(能够将kvdom返回的dom追加至container)、手写实现Component(实现initVNode，能够将vdom转换为 dom)、setState原理剖析、虚拟DOM原理剖析、diff策略

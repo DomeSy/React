@@ -9,8 +9,8 @@
 - - -
 04-familyBucket: React全家桶的应用、异步处理、动态路由、路由守卫、redux原理(createStore、applyMiddleware、compose、bindActionCreateor、bindActionCreateors)、react-redux原理(connect、Provider组件)、redux-thunk原理(thunk)、BrowserRouter原理)核心作用：history(历史记录，页面跳转)初始化向下传递，location(监听url地址的变化）变更变化、Route原理：路由配置，匹配检测，内容渲染、Route的path依赖matchPath.js,正则表达式、Link原理：跳转链接，处理点击的事件,历史记录的跳转,对a标签的包装
 - - -
-05-umiTest
+05-umiTest：umi和dva框架
 - - -
-06-E-commerceProjects
+06-E-commerceProjects：电商项目
 - - -
-07-sourceCode：手写实现createElement(并返回vdom)、手写实现render(能够将kvdom返回的dom追加至container)、手写实现Component(实现initVNode，能够将vdom转换为 dom)
+07-sourceCode：手写实现createElement(并返回vdom)、手写实现render(能够将kvdom返回的dom追加至container)、手写实现Component(实现initVNode，能够将vdom转换为 dom)、setState原理剖析、虚拟DOM原理剖析、diff策略

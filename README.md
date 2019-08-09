@@ -1,4 +1,4 @@
-# React
+# React-Study-Road
 钟爱React
 
 01-Introductions：React入门语法，条件渲染，循环渲染，setState特性（同步情况下的获取方法），生命周期（两个版本，React v16.0以前 和 React v16.4）

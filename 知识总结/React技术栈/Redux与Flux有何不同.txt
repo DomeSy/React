@@ -1,0 +1,15 @@
+Redux与Flux有何不同
+1>Flux
+a.Store 包含状态和更改逻辑
+b.有多个 Store	
+c.所有 Store 都互不影响且是平级的
+d.有单一调度器
+e.React 组件订阅 store
+f.状态是可变的	
+2>Redux
+a.Store 和更改逻辑是分开的
+b.只有一个 Store
+c.带有分层 reducer 的单一 Store
+d.没有调度器的概念
+e.容器组件是有联系的
+f.状态是不可改变的
